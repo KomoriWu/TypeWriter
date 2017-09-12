@@ -1,11 +1,10 @@
-package com.komoriwu.typewriter;
+package com.komoriwu.library;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
@@ -54,16 +53,15 @@ public class TypeWriteTextView extends TextView {
             int n = typedArray.getIndexCount();
             for (int i = 0; i < n; i++) {
                 int attr = typedArray.getIndex(i);
-                switch (attr) {
-                    case R.styleable.TypeWrite_setSpeed:
-                        speed = typedArray.getInteger(attr, 100);
-                        break;
-                    case R.styleable.TypeWrite_isEnableTypeWrite:
-                        isEnableTypeWrite = typedArray.getBoolean(attr, true);
-                        break;
-                    case R.styleable.TypeWrite_isEnableTtf:
-                        isEnableTtf = typedArray.getBoolean(attr, true);
-                        break;
+                if (attr == R.styleable.TypeWrite_setSpeed) {
+                    speed = typedArray.getInteger(attr, 100);
+
+                } else if (attr == R.styleable.TypeWrite_isEnableTypeWrite) {
+                    isEnableTypeWrite = typedArray.getBoolean(attr, true);
+
+                } else if (attr == R.styleable.TypeWrite_isEnableTtf) {
+                    isEnableTtf = typedArray.getBoolean(attr, true);
+
                 }
             }
             typedArray.recycle();

@@ -3,6 +3,8 @@ package com.komoriwu.typewriter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.komoriwu.library.TypeWriteTextView;
+
 public class MainActivity extends AppCompatActivity {
     private TypeWriteTextView mTypeWriteTextView;
 
