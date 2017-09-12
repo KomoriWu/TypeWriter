@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TypeWriter</string>
+    <string name="hint">看到《开眼》很多TextView都是逐步出字的效果。\n
+        出于好奇百度一番，发现实现的太过复杂，甚至上百行代码。而且还丢掉了TextView本该有的属性。\n
+        小弟不才，比较懒，用十几行代码撸出这个“轮子”。\n
+        不信你看看源码！！！</string>
+</resources>
