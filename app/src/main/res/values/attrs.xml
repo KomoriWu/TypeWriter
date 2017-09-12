@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TypeWrite">
+        //设置打字机速度
+        <attr name="setSpeed" format="integer" />
+        //是否设置字体
+        <attr name="isEnableTtf" format="boolean" />
+        //是否开启打字机模式
+        <attr name="isEnableTypeWrite" format="boolean" />
+    </declare-styleable>
+</resources>

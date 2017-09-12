@@ -1,6 +1,8 @@
 package com.komoriwu.typewriter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -20,8 +22,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class TypeWriteTextView extends TextView {
-    public static final int UPDATE_DELAY = 100;
-    public static final int UPDATE_PERIOD = 100;
+    public static final int UPDATE_DELAY = 10;
     private String mTextStr;
     private int mLength;
     private int mIndex;
@@ -44,24 +45,55 @@ public class TypeWriteTextView extends TextView {
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         mTextStr = (String) getText();
         mLength = mTextStr.length();
+        int speed = 100;
+        boolean isEnableTypeWrite = true;
+        boolean isEnableTtf = true;
+        if (attrs != null) {
+            TypedArray typedArray = context.getTheme().
+                    obtainStyledAttributes(attrs, R.styleable.TypeWrite, defStyleAttr, 0);
+            int n = typedArray.getIndexCount();
+            for (int i = 0; i < n; i++) {
+                int attr = typedArray.getIndex(i);
+                switch (attr) {
+                    case R.styleable.TypeWrite_setSpeed:
+                        speed = typedArray.getInteger(attr, 100);
+                        break;
+                    case R.styleable.TypeWrite_isEnableTypeWrite:
+                        isEnableTypeWrite = typedArray.getBoolean(attr, true);
+                        break;
+                    case R.styleable.TypeWrite_isEnableTtf:
+                        isEnableTtf = typedArray.getBoolean(attr, true);
+                        break;
+                }
+            }
+            typedArray.recycle();
+        }
+        if (isEnableTtf) {
+            String fontName = "Heavy.ttf";
+            super.setTypeface(Typeface.createFromAsset(getContext().getAssets(),
+                    "fonts/" + fontName), defStyleAttr);
+        }
 
-        Flowable.interval(UPDATE_DELAY, UPDATE_PERIOD, TimeUnit.MILLISECONDS)
-                .take(mLength+1)
-                .map(new Function<Long, String>() {
-                    @Override
-                    public String apply(Long aLong) throws Exception {
-                        return mTextStr.substring(0, mIndex);
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String str) throws Exception {
-                        mIndex++;
-                        setText(str);
-                    }
-                });
+        if (isEnableTypeWrite) {
+            Flowable.interval(UPDATE_DELAY, speed, TimeUnit.MILLISECONDS)
+                    .take(mLength + 1)
+                    .map(new Function<Long, String>() {
+                        @Override
+                        public String apply(Long aLong) throws Exception {
+                            return mTextStr.substring(0, mIndex);
+                        }
+                    })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<String>() {
+                        @Override
+                        public void accept(String str) throws Exception {
+                            mIndex++;
+                            setText(str);
+                        }
+                    });
+        }
+
     }
 
 }
